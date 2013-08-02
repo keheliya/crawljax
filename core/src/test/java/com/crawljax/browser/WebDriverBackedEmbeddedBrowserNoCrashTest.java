@@ -8,6 +8,8 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import org.junit.After;
@@ -107,7 +109,7 @@ public class WebDriverBackedEmbeddedBrowserNoCrashTest {
 	 */
 	@Test
 	public final void testFireEvent() throws Exception {
-		browser.goToUrl(new URL(SERVER.getSiteUrl() + "simple.html"));
+		browser.goToUrl(URI.create(SERVER.getSiteUrl() + "simple.html"));
 		browser.fireEventAndWait(new Eventable(new Identification(How.xpath, "//H1"),
 		        EventType.click));
 	}
@@ -125,11 +127,12 @@ public class WebDriverBackedEmbeddedBrowserNoCrashTest {
 	 * 
 	 * @throws CrawljaxException
 	 *             when the dom can not be downloaded.
+	 * @throws URISyntaxException 
 	 */
 	@Test
-	public final void testGetDom() throws CrawljaxException {
+	public final void testGetDom() throws CrawljaxException, URISyntaxException {
 		URL index = WebDriverBackedEmbeddedBrowserTest.class.getResource("/site/simple.html");
-		browser.goToUrl(index);
+		browser.goToUrl(index.toURI());
 		browser.getStrippedDom();
 	}
 
@@ -159,7 +162,7 @@ public class WebDriverBackedEmbeddedBrowserNoCrashTest {
 	@Test
 	public final void testGoToUrl() throws CrawljaxException, MalformedURLException {
 		// TODO Stefan; bug in WebDriver iff you specify bla:// will end up in NullPointer.
-		browser.goToUrl(new URL("http://non.exsisting.domain"));
+		browser.goToUrl(URI.create("http://non.exsisting.domain"));
 	}
 
 	/**

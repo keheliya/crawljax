@@ -3,6 +3,7 @@ package com.crawljax.browser;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -257,9 +258,9 @@ public final class WebDriverBackedEmbeddedBrowser implements EmbeddedBrowser {
 	 *            The URL.
 	 */
 	@Override
-	public void goToUrl(URL url) {
+	public void goToUrl(URI url) {
 		try {
-			browser.navigate().to(url);
+			browser.navigate().to(url.toString());
 			Thread.sleep(this.crawlWaitReload);
 			handlePopups();
 		} catch (WebDriverException e) {
@@ -605,7 +606,8 @@ public final class WebDriverBackedEmbeddedBrowser implements EmbeddedBrowser {
 		}
 	}
 
-	private void locateFrameAndgetSource(Document document, String topFrame, Element frameElement) throws NoSuchFrameException {
+	private void locateFrameAndgetSource(Document document, String topFrame, Element frameElement)
+	        throws NoSuchFrameException {
 		String frameIdentification = "";
 
 		if (topFrame != null && !topFrame.equals("")) {

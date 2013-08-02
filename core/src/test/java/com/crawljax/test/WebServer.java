@@ -1,6 +1,6 @@
 package com.crawljax.test;
 
-import java.net.URL;
+import java.net.URI;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
@@ -13,7 +13,7 @@ public class WebServer {
 	private final Resource resource;
 
 	private int port;
-	private URL demoSite;
+	private URI demoSite;
 	private Server server;
 	private boolean started;
 
@@ -32,11 +32,11 @@ public class WebServer {
 		server.setHandler(handler);
 		server.start();
 		this.port = ((ServerConnector) server.getConnectors()[0]).getLocalPort();
-		this.demoSite = new URL("http", "localhost", port, "/");
+		this.demoSite = URI.create("http://localhost:" + port);
 		this.started = true;
 	}
 
-	public URL getSiteUrl() {
+	public URI getSiteUrl() {
 		checkServerStarted();
 		return demoSite;
 	}

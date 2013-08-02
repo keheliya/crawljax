@@ -1,7 +1,7 @@
 package com.crawljax.test;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -106,10 +106,10 @@ public class BaseCrawler {
 		return builder;
 	}
 
-	protected URL getUrl() {
+	protected URI getUrl() {
 		try {
-			return new URL(webServer.getSiteUrl(), siteExtension);
-		} catch (MalformedURLException e) {
+			return URI.create(webServer.getSiteUrl() + siteExtension);
+		} catch (IllegalArgumentException e) {
 			throw new CrawljaxException("Invalid URL: " + webServer.getSiteUrl() + siteExtension);
 		}
 	}

@@ -7,7 +7,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
+import java.net.URI;
 
 import javax.xml.transform.TransformerException;
 
@@ -49,10 +49,11 @@ public class HelperTest {
 	public void testGetDocumentFromBrowser() throws SAXException, IOException {
 		// TODO Stefan; Refactor out the direct use of FirefoxDriver
 		EmbeddedBrowser browser =
-		        WebDriverBackedEmbeddedBrowser.withDriver(new FirefoxDriver(),  ImmutableSortedSet.<String> of(), 200, 300);
+		        WebDriverBackedEmbeddedBrowser.withDriver(new FirefoxDriver(),
+		                ImmutableSortedSet.<String> of(), 200, 300);
 		File index = new File(INDEX);
 		String html = "";
-		browser.goToUrl(new URL("file://" + index.getAbsolutePath()));
+		browser.goToUrl(URI.create("file://" + index.getAbsolutePath()));
 		html = browser.getStrippedDom();
 		assertNotNull(html);
 

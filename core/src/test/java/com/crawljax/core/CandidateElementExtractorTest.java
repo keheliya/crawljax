@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
-import java.net.URL;
+import java.net.URI;
 import java.util.List;
 
 import org.junit.After;
@@ -41,8 +41,9 @@ public class CandidateElementExtractorTest {
 	private static final StateVertex DUMMY_STATE = StateMachine.createIndex("http://localhost",
 	        "", "");
 
-	@Mock private Plugins plugins;
-	
+	@Mock
+	private Plugins plugins;
+
 	@ClassRule
 	public static final RunWithWebServer DEMO_SITE_SERVER = new RunWithWebServer("/demo-site");
 	private EmbeddedBrowser browser;
@@ -58,7 +59,7 @@ public class CandidateElementExtractorTest {
 	@Test
 	public void testExtract() throws InterruptedException, CrawljaxException {
 		CrawljaxConfigurationBuilder builder =
-		        CrawljaxConfiguration.builderFor(DEMO_SITE_SERVER.getSiteUrl().toExternalForm());
+		        CrawljaxConfiguration.builderFor(DEMO_SITE_SERVER.getSiteUrl().toString());
 		builder.crawlRules().click("a");
 		builder.crawlRules().clickOnce(true);
 		CrawljaxConfiguration config = builder.build();
@@ -92,7 +93,7 @@ public class CandidateElementExtractorTest {
 	@Test
 	public void testExtractExclude() throws Exception {
 		CrawljaxConfigurationBuilder builder =
-		        CrawljaxConfiguration.builderFor(DEMO_SITE_SERVER.getSiteUrl().toExternalForm());
+		        CrawljaxConfiguration.builderFor(DEMO_SITE_SERVER.getSiteUrl().toString());
 		builder.crawlRules().click("a");
 		builder.crawlRules().dontClick("div").withAttribute("id", "menubar");
 		builder.crawlRules().clickOnce(true);
@@ -114,12 +115,12 @@ public class CandidateElementExtractorTest {
 		server.before();
 		CrawljaxConfigurationBuilder builder =
 		        CrawljaxConfiguration
-		                .builderFor(server.getSiteUrl().toExternalForm() + "iframe/");
+		                .builderFor(server.getSiteUrl() + "iframe/");
 		builder.crawlRules().click("a");
 		CrawljaxConfiguration config = builder.build();
 
 		CandidateElementExtractor extractor = newElementExtractor(config);
-		browser.goToUrl(new URL(server.getSiteUrl().toExternalForm() + "iframe/"));
+		browser.goToUrl(URI.create(server.getSiteUrl() + "iframe/"));
 		List<CandidateElement> candidates = extractor.extract(DUMMY_STATE);
 
 		for (CandidateElement e : candidates) {

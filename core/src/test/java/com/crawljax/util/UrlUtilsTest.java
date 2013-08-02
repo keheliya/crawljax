@@ -6,7 +6,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
 
 import org.junit.Test;
 
@@ -46,23 +46,31 @@ public class UrlUtilsTest {
 	@Test
 	public void testExtractNewUrl() throws MalformedURLException {
 		final String base = "http://example.com";
-		URL baseWithA = new URL(base + "/a");
+		URI baseWithA = URI.create(base + "/a");
 		assertThat(UrlUtils.extractNewUrl(base, "a"), is(baseWithA));
 
 		assertThat(UrlUtils.extractNewUrl(base + "/example", "/a"), is(baseWithA));
 
 		assertThat(UrlUtils.extractNewUrl(base + "/example/b", "/a"), is(baseWithA));
 
-		assertThat(UrlUtils.extractNewUrl(base + "/example/b", "a"), is(new URL(base
-		        + "/example/a")));
+		assertThat(UrlUtils.extractNewUrl(base + "/example/b", "a"),
+		        is(URI.create(base + "/example/a")));
 
 		assertThat(UrlUtils.extractNewUrl(base + "/example/b", "../a"), is(baseWithA));
 
-		assertThat(UrlUtils.extractNewUrl(base, "http://test.example.com"), is(new URL(
+		assertThat(UrlUtils.extractNewUrl(base, "http://test.example.com"), is(URI.create(
 		        "http://test.example.com")));
 
-		assertThat(UrlUtils.extractNewUrl(base, "#someHash"), is(new URL(base + "#someHash")));
+		assertThat(UrlUtils.extractNewUrl(base, "#someHash"), is(URI.create(base + "#someHash")));
 
+	}
+
+	@Test
+	public void URIworks() {
+		URI base = URI.create("http://example.com/");
+		assertThat(base.resolve("/a").toString(), is("http://example.com/a"));
+		assertThat(URI.create("http://example.com/b").resolve("http://example.com/a").toString(),
+		        is("http://example.com/a"));
 	}
 
 }

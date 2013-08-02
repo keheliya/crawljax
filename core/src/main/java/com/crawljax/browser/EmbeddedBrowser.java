@@ -1,7 +1,7 @@
 package com.crawljax.browser;
 
 import java.io.File;
-import java.net.URL;
+import java.net.URI;
 
 import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.WebDriver;
@@ -31,7 +31,7 @@ public interface EmbeddedBrowser {
 	 * @param url
 	 *            the URL.
 	 */
-	void goToUrl(URL url);
+	void goToUrl(URI url);
 
 	/**
 	 * fires the event.

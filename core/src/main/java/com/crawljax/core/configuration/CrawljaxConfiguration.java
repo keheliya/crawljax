@@ -4,8 +4,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
 import java.net.URLEncoder;
 import java.util.concurrent.TimeUnit;
 
@@ -33,7 +32,7 @@ public class CrawljaxConfiguration {
 		private final CrawljaxConfiguration config;
 		private final CrawlRulesBuilder crawlRules = CrawlRules.builder();
 
-		private CrawljaxConfigurationBuilder(URL url) {
+		private CrawljaxConfigurationBuilder(URI url) {
 			Preconditions.checkNotNull(url);
 			config = new CrawljaxConfiguration();
 			config.url = url;
@@ -55,12 +54,12 @@ public class CrawljaxConfiguration {
 				String encodedUsername = URLEncoder.encode(username, "UTF-8");
 				String encodedPassword = URLEncoder.encode(password, "UTF-8");
 				config.url =
-				        new URL(config.url.getProtocol()
+				        URI.create(config.url.getScheme()
 				                + "://" + encodedUsername
 				                + ":" + encodedPassword + "@" + config.url.getAuthority()
 				                + config.url.getPath());
 				System.out.println("URL " + config.url);
-			} catch (UnsupportedEncodingException | MalformedURLException e) {
+			} catch (UnsupportedEncodingException | IllegalArgumentException e) {
 				throw new CrawljaxException("Could not parse the username/password to a URL", e);
 			}
 			return this;
@@ -210,7 +209,7 @@ public class CrawljaxConfiguration {
 	 *            The url you want to setup a configuration for
 	 * @return The builder to configure the crawler.
 	 */
-	public static CrawljaxConfigurationBuilder builderFor(URL url) {
+	public static CrawljaxConfigurationBuilder builderFor(URI url) {
 		Preconditions.checkNotNull(url, "URL was null");
 		return new CrawljaxConfigurationBuilder(url);
 	}
@@ -221,14 +220,25 @@ public class CrawljaxConfiguration {
 	 * @return The builder to configure the crawler.
 	 */
 	public static CrawljaxConfigurationBuilder builderFor(String url) {
-		try {
-			return new CrawljaxConfigurationBuilder(new URL(url));
-		} catch (MalformedURLException e) {
-			throw new CrawljaxException("Could not read that URL", e);
-		}
+		return new CrawljaxConfigurationBuilder(URI.create(url));
 	}
 
-	private URL url;
+	// /**
+	// * @param url
+	// * The url you want to setup a configuration for
+	// * @return The builder to configure the crawler.
+	// * @deprecated Use {@link #builderFor(URI)}
+	// */
+	// @Deprecated
+	// public static CrawljaxConfigurationBuilder builderFor(URL url) {
+	// try {
+	// return new CrawljaxConfigurationBuilder(url.toURI());
+	// } catch (URISyntaxException e) {
+	// throw new CrawljaxException("URL could not be transformed to URI", e);
+	// }
+	// }
+
+	private URI url;
 
 	private BrowserConfiguration browserConfig = new BrowserConfiguration(BrowserType.FIREFOX);
 	private ImmutableList<Plugin> plugins;
@@ -244,7 +254,7 @@ public class CrawljaxConfiguration {
 	private CrawljaxConfiguration() {
 	}
 
-	public URL getUrl() {
+	public URI getUrl() {
 		return url;
 	}
 

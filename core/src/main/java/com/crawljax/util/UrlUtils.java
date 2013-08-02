@@ -1,6 +1,7 @@
 package com.crawljax.util;
 
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.regex.PatternSyntaxException;
 
@@ -18,13 +19,25 @@ public class UrlUtils {
 	 *            The target URL, relative or not
 	 * @return The new URL.
 	 */
-	public static URL extractNewUrl(String currentUrl, String href) throws MalformedURLException {
+	public static URI extractNewUrl(String currentUrl, String href) throws MalformedURLException {
 		if (href == null || isJavascript(href) || href.startsWith("mailto:")) {
 			throw new MalformedURLException(href + " is not a HTTP url");
 		} else if (href.contains("://")) {
-			return new URL(href);
+			return URI.create(href);
 		} else {
-			return new URL(new URL(currentUrl), href);
+			URI current = URI.create(currentUrl);
+			if (href.charAt(0) == '/') {
+				return current.resolve(href);
+			} else {
+				String path = current.getPath();
+				int slashIndex = path.lastIndexOf('/');
+				if (slashIndex > 0) {
+					path = path.substring(0, slashIndex + 1);
+				} else {
+					path += '/';
+				}
+				return current.resolve(path + href);
+			}
 		}
 	}
 

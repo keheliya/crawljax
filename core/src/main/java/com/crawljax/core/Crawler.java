@@ -1,7 +1,7 @@
 package com.crawljax.core;
 
 import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
 import java.util.Map.Entry;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
@@ -50,7 +50,7 @@ public class Crawler {
 	private final EmbeddedBrowser browser;
 	private final CrawlerContext context;
 	private final StateComparator stateComparator;
-	private final URL url;
+	private final URI url;
 	private final Plugins plugins;
 	private final FormHandler formHandler;
 	private final CrawlRules crawlRules;
@@ -283,7 +283,7 @@ public class Crawler {
 		} else {
 			LOG.info("Found an invisible link with href={}", href);
 			try {
-				URL url = UrlUtils.extractNewUrl(browser.getCurrentUrl(), href);
+				URI url = UrlUtils.extractNewUrl(browser.getCurrentUrl(), href);
 				browser.goToUrl(url);
 				return true;
 			} catch (MalformedURLException e) {
@@ -445,7 +445,7 @@ public class Crawler {
 		browser.goToUrl(url);
 		plugins.runOnUrlLoadPlugins(context);
 		StateVertex index =
-		        StateMachine.createIndex(url.toExternalForm(), browser.getStrippedDom(),
+		        StateMachine.createIndex(url.toString(), browser.getStrippedDom(),
 		                stateComparator.getStrippedDom(browser));
 		Preconditions.checkArgument(index.getId() == StateVertex.INDEX_ID,
 		        "It seems some the index state is crawled more than once.");

@@ -5,7 +5,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -26,7 +26,6 @@ import com.codahale.metrics.MetricRegistry;
 import com.crawljax.browser.EmbeddedBrowser;
 import com.crawljax.condition.browserwaiter.WaitConditionChecker;
 import com.crawljax.core.configuration.CrawljaxConfiguration;
-import com.crawljax.core.plugin.Plugin;
 import com.crawljax.core.plugin.Plugins;
 import com.crawljax.core.state.Eventable;
 import com.crawljax.core.state.Identification;
@@ -46,7 +45,7 @@ import com.google.common.collect.ImmutableList;
 @RunWith(MockitoJUnitRunner.class)
 public class CrawlerTest {
 
-	private URL url;
+	private URI url;
 
 	private Crawler crawler;
 
@@ -110,8 +109,8 @@ public class CrawlerTest {
 		when(elementExtractor.newExtractor(browser)).thenReturn(extractor);
 		FormHandlerFactory formHandlerFactory = mock(FormHandlerFactory.class);
 		when(formHandlerFactory.newFormHandler(browser)).thenReturn(formHandler);
-		url = new URL("http://example.com");
-		when(browser.getCurrentUrl()).thenReturn(url.toExternalForm());
+		url = URI.create("http://example.com");
+		when(browser.getCurrentUrl()).thenReturn(url.toString());
 		when(sessionProvider.get()).thenReturn(session);
 
 		CrawljaxConfiguration config = Mockito.spy(CrawljaxConfiguration.builderFor(url).build());
