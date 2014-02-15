@@ -25,7 +25,7 @@ public class MetricPluginExample {
 
 	public static void main(String[] args) {
 		CrawljaxConfiguration config =
-		        CrawljaxConfiguration.builderFor("http://demo.crawljax.com")
+		        CrawljaxConfiguration.builderFor("http://css-tricks.com/examples/DynamicPage/#about.php")
 		                .addPlugin(new MetricPlugin())
 		                .build();
 

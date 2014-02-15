@@ -1,5 +1,6 @@
 package com.crawljax.core.state;
 
+import com.codahale.metrics.MetricRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -146,7 +147,12 @@ public class StateMachine {
 	 */
 	public boolean swithToStateAndCheckIfClone(final Eventable event, StateVertex newState,
 	        CrawlerContext context) {
-		StateVertex cloneState = this.addStateToCurrentState(newState, event);
+       final String metricName = MetricRegistry.name(StateMachine.class,
+                "stringCompareTime");
+        long startTime = System.nanoTime();
+        StateVertex cloneState = this.addStateToCurrentState(newState, event);
+        long estimatedTime = System.nanoTime() - startTime;
+        context.getSession().getRegistry().histogram(metricName).update(estimatedTime);
 
 		runOnInvariantViolationPlugins(context);
 
