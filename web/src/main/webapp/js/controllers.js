@@ -103,8 +103,15 @@ App.BreadcrumbController = Ember.Controller.extend({
 });
 
 App.SidenavController = Ember.Controller.extend({
-	needs: ['application']
-	//sidenav: null
+	needs: ['application'],
+	actions: {
+    	rest: function(link){
+    console.log('rest!');
+    	},
+    	moveTo: function(route) {
+    console.log('moveTo!');
+    	}
+    	}
 });
 
 App.ExecutionQueueController = Ember.Controller.extend({
@@ -134,6 +141,7 @@ App.ConfigurationsIndexItemController = Ember.Controller.extend({
 
 App.ConfigurationController = Ember.Controller.extend({
 	needs: ['application'],
+    actions: {
 	rest: function(link){
 		switch(link.target)
 		{
@@ -170,6 +178,7 @@ App.ConfigurationController = Ember.Controller.extend({
 			var router = this.get('target');
 			router.transitionTo(route);
 		}
+	}
 	}
 });
 

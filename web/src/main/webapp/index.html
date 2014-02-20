@@ -18,11 +18,11 @@
 	
 	<script type="text/x-handlebars">
 		<div class="navbar navbar-inverse navbar-fixed-top">
-			<div class="navbar-inner">{{partial header}}</div>
+			<div class="navbar-inner">{{partial "header"}}</div>
 		</div>
 		<div class="container">
 			<div class="row">
-				{{partial sidebar}}
+				{{partial "sidebar"}}
 				<div class="span9">
 					{{outlet}}
 				</div>
@@ -74,7 +74,7 @@
 			<ul class="nav nav-list">
 				<li class="nav-header">Crawl Execution Queue</li>
 				{{#each controllers.application.executionQueue}}
-					<li><span>{{#linkTo 'crawlrecord' this}}#{{id}}{{/linkTo}} {{configurationName}} - <i>{{crawlStatus}}</i></span></li>
+					<li><span>{{#link-to 'crawlrecord' this}}#{{id}}{{/link-to}} {{configurationName}} - <i>{{crawlStatus}}</i></span></li>
 				{{else}}
 					<li><i>empty</i></li>
 				{{/each}}
@@ -98,8 +98,8 @@
 			<tbody>
 				{{#each controller}}
 				<tr>
-					<td>{{#linkTo "configuration" content}}{{content.name}}{{/linkTo}}</td>
-					<td><a {{bindAttr href="configuration.url"}} target="_blank">{{content.url}}</a></td>
+					<td>{{#link-to "configuration" content}}{{content.name}}{{/link-to}}</td>
+					<td><a {{bind-attr href="configuration.url"}} target="_blank">{{content.url}}</a></td>
 					<td>{{lastCrawlFormatted}}</td>
 					<td>{{lastDurationFormatted}}</td>
 				</tr>
@@ -110,16 +110,16 @@
 	
 	<script type="text/x-handlebars" data-template-name="configuration">
 		<ul class="nav nav-tabs">
-			{{#view App.NavView route='configuration.index' }}<a href='#' {{action moveTo view.route}}>Overview</a>{{/view}}
-			{{#view App.NavView route='configuration.rules' }}<a href='#' {{action moveTo view.route}}>Crawl Rules</a>{{/view}}
-			{{#view App.NavView route='configuration.assertions' }}<a href='#' {{action moveTo view.route}}>Assertions</a>{{/view}}
-			{{#view App.NavView route='configuration.plugins' }}<a href='#' {{action moveTo view.route}}>Plugins</a>{{/view}}
+			{{#view App.NavView route='configuration.index' }}<a href='#' {{action 'moveTo' view.route}}>Overview</a>{{/view}}
+			{{#view App.NavView route='configuration.rules' }}<a href='#' {{action 'moveTo' view.route}}>Crawl Rules</a>{{/view}}
+			{{#view App.NavView route='configuration.assertions' }}<a href='#' {{action 'moveTo' view.route}}>Assertions</a>{{/view}}
+			{{#view App.NavView route='configuration.plugins' }}<a href='#' {{action 'moveTo' view.route}}>Plugins</a>{{/view}}
 		</ul>
 		{{outlet}}
 	</script>
 	
 	<script type="text/x-handlebars" data-template-name="configuration/index">
-		{{partial config_general}}
+		{{partial "config_general"}}
 	</script>
 	
 	<script type="text/x-handlebars" data-template-name="_config_general">
@@ -208,24 +208,7 @@
 		{{/if}}
 		<a href="#" {{action 'add'}}> Add a New Click Rule</a>
 	</script>
-	
-	<script type="text/x-handlebars" data-template-name="conditions">
-		{{#if content}}
-			<table class="table table-striped table-condensed">
-				{{#each controller}}
-					<tr>
-						<td>{{view App.FormSelect valueBinding='content.condition' contentBinding="App.pageConditions" optionValuePath="content.value"
-							optionLabelPath="content.name" isForm=''}}</td>
-						<td>{{view App.FormTextField valueBinding='content.expression' isForm='' required='true'
-							inputClassNames='input-xlarge' errorText='This field is Required'}}</td>
-						<td><a href="#" {{action 'remove' content}}>Remove</a></td>
-					</tr>
-				{{/each}}
-			</table>
-		{{/if}}
-		<a href="#" {{action 'add'}}> Add a New Condition</a>
-	</script>
-	
+
 	<script type="text/x-handlebars" data-template-name="comparators">
 		{{#if content}}
 			<table class="table table-striped table-condensed">
@@ -330,7 +313,7 @@
 	</script>
 	
 	<script type="text/x-handlebars" data-template-name="configurations/new">
-		{{partial config_general}}
+		{{partial "config_general"}}
 	</script>
 	
 	<script type="text/x-handlebars" data-template-name="plugin_management">
@@ -379,8 +362,8 @@
 			<tbody>
 				{{#each crawlrecord in controller}}
 				<tr>
-					<td>{{#linkTo 'crawlrecord' crawlrecord}}Crawl {{content.id}}{{/linkTo}}</td>
-					<td><a {{bindAttr href="configURL"}}>{{content.configurationName}}</a></td>
+					<td>{{#link-to 'crawlrecord' crawlrecord}}Crawl {{content.id}}{{/link-to}}</td>
+					<td><a {{bind-attr href="configURL"}}>{{content.configurationName}}</a></td>
 					<td>{{crawlrecord.startTimeFormatted}}</td>
 					<td>{{content.crawlStatus}}</td>
 				</tr>
@@ -391,10 +374,10 @@
 	
 	<script type="text/x-handlebars" data-template-name="crawlrecord">
 			<ul class="nav nav-tabs">
-				{{#view App.NavView route='log' }}{{#linkTo 'log' content}}Log{{/linkTo}}{{/view}}
+				{{#view App.NavView route='log' }}{{#link-to 'log' content}}Log{{/link-to}}{{/view}}
 				{{#if controller.isFinished}}
 					{{#each plugin in content.plugins}}
-						{{#view App.NavView route='plugin_output' contentBinding="plugin" routeParam='key'}}{{#linkTo 'plugin_output' content plugin}}{{plugin.name}}{{/linkTo}}{{/view}}
+						{{#view App.NavView route='plugin_output' contentBinding="plugin" routeParam='key'}}{{#link-to 'plugin_output' content plugin}}{{plugin.name}}{{/link-to}}{{/view}}
 					{{/each}}
 				{{/if}}
 			</ul>
@@ -408,14 +391,16 @@
 	
 	<script type="text/x-handlebars" data-template-name="plugin_output">
 		<div id="frameContainer">
-			<iframe {{bindAttr src="url"}} id="pluginOutputFrame" onload="$('#pluginOutputFrame').css({'height':(($(document).height())-150)+'px'}); $('#pluginOutputFrame').css({'width':$('#frameContainer').width()+'px'});" seamless></iframe>
+			<iframe {{bind-attr src="url"}} id="pluginOutputFrame" onload="$('#pluginOutputFrame').css({'height':(($(document).height())-150)+'px'}); $('#pluginOutputFrame').css({'width':$('#frameContainer').width()+'px'});" seamless></iframe>
 		</div>
 	</script>
 	
 	<script type="text/javascript" src="js/libs/jquery-1.9.1.min.js"></script>
-	<script type="text/javascript" src="js/libs/bootstrap.min.js"></script>
-	<script type="text/javascript" src="js/libs/handlebars-1.0.0-rc.4.js"></script>
-	<script type="text/javascript" src="js/libs/ember-1.0.0-rc.5.js"></script>
+	<script type="text/javascript" src="js/libs/bootstrap.min.js"></script><!--
+    <script type="text/javascript" src="js/libs/handlebars-1.0.0-rc.4.js"></script>
+    <script type="text/javascript" src="js/libs/ember-1.0.0-rc.5.js"></script>-->
+	<script type="text/javascript" src="js/libs/handlebars-v1.3.0.js"></script>
+	<script type="text/javascript" src="js/libs/ember.1.4.0.js"></script>
 	
 	<script type="text/javascript" src="js/app.js"></script>
     <script type="text/javascript" src="js/models.js"></script>

@@ -8,7 +8,7 @@ App.BreadcrumbView = Ember.CollectionView.extend({
  		} return this._super(view, attrs);
  	},
 	itemViewClass: Ember.View.extend({
-		template: Ember.Handlebars.compile('<a {{bindAttr href="view.content.target"}}>{{view.content.text}}</a><span class="divider">/</span>')
+		template: Ember.Handlebars.compile('<a {{bind-attr href="view.content.target"}}>{{view.content.text}}</a><span class="divider">/</span>')
 	}),
 	lastItemViewClass: Ember.View.extend({
 		classNames: "active",
@@ -24,16 +24,16 @@ App.SideNavView = Ember.CollectionView.extend({
 	  		template: Ember.Handlebars.compile([
 	  			'{{#if view.content.action}}',
 	  			'	{{#if view.disabled}}',
-	  			'		{{#if view.content.icon}}<i {{bindAttr class="view.content.icon" }}></i>{{/if}}',
+	  			'		{{#if view.content.icon}}<i {{bind-attr class="view.content.icon" }}></i>{{/if}}',
 		  		'		{{view.content.text}}',
 	  			'	{{else}}',	
 	  			'		<a href="#" {{action "rest" view.content}}>',
-	  			'   	{{#if view.content.icon}}<i {{bindAttr class="view.content.icon" }}></i>{{/if}}',
+	  			'   	{{#if view.content.icon}}<i {{bind-attr class="view.content.icon" }}></i>{{/if}}',
 	  			'		{{view.content.text}}</a>',
 	  			'	{{/if}}',
 	  			'{{else}}',
-	  			'	<a {{bindAttr href="view.content.target"}}>',
-	  			'   {{#if view.content.icon}}<i {{bindAttr class="view.content.icon" }}></i>{{/if}}',
+	  			'	<a {{bind-attr href="view.content.target"}}>',
+	  			'   {{#if view.content.icon}}<i {{bind-attr class="view.content.icon" }}></i>{{/if}}',
 	  			'	{{view.content.text}}</a>',
 	  			'{{/if}}'].join("\n"))
 	  	}),
@@ -67,14 +67,14 @@ App.NavView = Ember.View.extend({
 
 App.FormField = Ember.View.extend({
 	tagName: 'div',
-	classNameBindings: ['isForm: control-group'],
+	classNameBindings: ['isForm:control-group'],
 	errorText: null,
 	label: null,
 	dynamicLabel: false,
 	isForm: true,
 	template: Ember.Handlebars.compile([
 	    '{{#if view.label}}{{view view.labelView viewName="labelView"}}{{/if}}',
-	    '<div {{bindAttr class="isForm: controls"}}>',
+	    '<div {{bind-attr class="isForm: controls"}}>',
 	    '  {{view view.inputField viewName="inputField"}}',
 	    '  {{view view.errorView viewName="errorView"}}',
 	    '</div>'].join("\n")),

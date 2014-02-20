@@ -1,5 +1,14 @@
 
-App = Ember.Application.create({LOG_TRANSITIONS: true});
+App = Ember.Application.create({
+    LOG_TRANSITIONS: true,
+    LOG_TRANSITIONS_INTERNAL: true,
+    LOG_ACTIVE_GENERATION: true,
+    LOG_BINDINGS: true,
+    LOG_VIEW_LOOKUPS: true,
+    LOG_STACKTRACE_ON_DEPRECATION: true,
+    LOG_VERSION: true,
+    debugMode: true
+    });
 
 Ember.Route.reopen({
 	getTargetRoute: function(){
@@ -112,7 +121,7 @@ App.ConfigurationsNewRoute = Ember.Route.extend({
 		var controller = this.controllerFor('configuration');
 		var model = App.Configurations.getNew();
 		controller.set('content', model);
-		
+
 		var sideNav = this.controllerFor("sidenav");
 		sideNav.set("rest", controller.rest);
 		sideNav.set("content", model);
@@ -137,7 +146,7 @@ App.NewRoute = Ember.Route.extend({
 		var controller = this.controllerFor('configuration');
 		var model = App.Configurations.getNew(model.id);
 		controller.set('content', model);
-		
+
 		var sideNav = this.controllerFor("sidenav");
 		sideNav.set("rest", controller.rest);
 		sideNav.set("content", model);
@@ -214,7 +223,7 @@ App.LogRoute = Ember.Route.extend({
 		if (controller.isLogging) {
 			appController.sendMsg('stoplog');
 		}
-		setTimeout(function(){ 
+		setTimeout(function(){
 			$('#logPanel').css({'height':(($(document).height())-162)+'px'});
 			$('#logPanel').empty();
 			appController.sendMsg('startlog-' + controller.get('content.id'));
@@ -246,7 +255,7 @@ App.ConfigFilterRoute = Ember.Route.extend({
 		var controller = this.controllerFor("crawlrecords.index");
 		var model = App.CrawlRecords.findAll(model.config_id);
 		controller.set('content', model);
-		
+
 		var sideNav = this.controllerFor("sidenav");
 		sideNav.set("sidenav", [App.Link.create({text:"All Crawl Records", target:"#/crawlrecords", icon:"icon-book"})]);
 		this.controllerFor('breadcrumb').set("breadcrumb", [App.Link.create({text: "History", target: "#/crawlrecords"})]);
