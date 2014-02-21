@@ -209,12 +209,16 @@ App.CrawlrecordRoute = Ember.Route.extend({
 	}
 });
 
+/*
 App.CrawlrecordIndexRoute = Ember.Route.extend({
 	redirect: function(arg) {
+	    console.log('*****thisTargetRoute:'+this.getTargetRoute()+' thisRouteName:'+this.routeName);
 		if(this.getTargetRoute() === this.routeName)
+		    console.log("it's happening!!!!!!!!!!!");
 			this.transitionTo('log');
 	}
 });
+*/
 
 App.LogRoute = Ember.Route.extend({
 	setupController: function(controller, model) {
