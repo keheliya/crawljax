@@ -27,7 +27,7 @@ App.SideNavView = Ember.CollectionView.extend({
 	  			'		{{#if view.content.icon}}<i {{bind-attr class="view.content.icon" }}></i>{{/if}}',
 		  		'		{{view.content.text}}',
 	  			'	{{else}}',	
-	  			'		<a href="#" {{action "rest" view.content}}>',
+	  			'		<a href="#" {{action "rest" view.content target="controller.controllers.configuration"}}>',
 	  			'   	{{#if view.content.icon}}<i {{bind-attr class="view.content.icon" }}></i>{{/if}}',
 	  			'		{{view.content.text}}</a>',
 	  			'	{{/if}}',

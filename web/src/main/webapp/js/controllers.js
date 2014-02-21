@@ -103,7 +103,7 @@ App.BreadcrumbController = Ember.Controller.extend({
 });
 
 App.SidenavController = Ember.Controller.extend({
-	needs: ['application'],
+	needs: ['application','configuration'],
 	actions: {
     	rest: function(link){
     console.log('rest!');
@@ -148,7 +148,7 @@ App.ConfigurationController = Ember.Controller.extend({
 			case "add":
 				if (validateForm('config_form')) {
 					var router = this.get('target');
-					App.Configurations.add(this.get("content"), function(data){ router.transitionToRoute('configuration', data); });
+					App.Configurations.add(this.get("content"), function(data){ router.router.transitionTo('configuration', data); });
 				}
 				break;
 			case "run":
