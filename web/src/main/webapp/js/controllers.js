@@ -139,7 +139,7 @@ App.ConfigurationsIndexItemController = Ember.Controller.extend({
 	}.property('content.lastCrawl', 'content.lastDuration')
 });
 
-App.ConfigurationController = Ember.Controller.extend({
+App.ConfigurationController = Ember.ObjectController.extend({
 	needs: ['application'],
     actions: {
 	rest: function(link){

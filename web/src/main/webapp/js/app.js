@@ -25,7 +25,7 @@ App.Router.map(function() {
 			this.route("plugins");
 		});
 		this.route("new");
-		this.resource("new", {path: "new/:configuration_id"});
+	//	this.resource("new", {path: "new/:configuration_id"});
 	});
 	
 	this.resource("plugin_management", {path: "plugins"});

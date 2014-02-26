@@ -105,6 +105,7 @@ App.Configurations.reopenClass({
 	},
 	add: function(config, callback)
 	{
+	    var self = this;
 		$.ajax({
 			url: '/rest/configurations',
 			async: false,
@@ -113,11 +114,16 @@ App.Configurations.reopenClass({
 			data: JSON.stringify(config, this.cleanJSON),
 			dataType: 'json',
 			context: config,
-			success: function(response){
+/*			success: function(response){
 				this.setProperties(response);
 				if (callback !== undefined) callback(this);
 			}
-		});
+		});*/
+		 }).then(function(response) {
+            this.setProperties(response);
+            //if (callback !== undefined) callback(this);
+            this.get('target').transitionToRoute('configuration', response);
+          });
 		return config;
 	},
 	update: function(config)
@@ -146,10 +152,15 @@ App.Configurations.reopenClass({
 			data: JSON.stringify(config, this.cleanJSON),
 			dataType: 'json',
 			context: config,
-			success: function(response){ 
+			/*success: function(response){
 				if (callback !== undefined) callback(config); 
 			}
-		});
+		});*/
+		}).then(function(response) {
+                    this.setProperties(response);
+                    //if (callback !== undefined) callback(this);
+                    this.get('target').transitionToRoute('configurations');
+                  });
 	},
 	cleanJSON: function(key, value){ 
 		return value;
