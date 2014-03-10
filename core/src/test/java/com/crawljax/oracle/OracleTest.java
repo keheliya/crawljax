@@ -16,6 +16,11 @@ import com.crawljax.oraclecomparator.comparators.SimpleComparator;
 import com.crawljax.oraclecomparator.comparators.StyleComparator;
 import com.crawljax.oraclecomparator.comparators.XPathExpressionComparator;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+
 public class OracleTest {
 
 	private void compareTwoDomsWithComparatorEqual(String original, String newDom,
@@ -137,6 +142,35 @@ public class OracleTest {
 		compareTwoDomsWithComparatorNotEqual(
 		        "<HTML><SPAN style=\"display:inline;color:red;\">foo</SPAN></HTML>",
 		        "<HTML><SPAN style=\"display:none; color:green;\">foo</SPAN></HTML>", oracle);
+
+
+
+		String output_loc = "target/test-data/state-explorer/";
+		String controlDom = getDomFromFile(output_loc,"state1.html");
+		String testDom = getDomFromFile(output_loc,"state2.html");
+
+		compareTwoDomsWithComparatorEqual(controlDom,testDom,oracle);
+
+
+	}
+
+	private String getDomFromFile(String output_loc, String s) {
+		String everything=null;
+		try(BufferedReader br = new BufferedReader(new FileReader(output_loc+s))) {
+			StringBuilder sb = new StringBuilder();
+			String line = br.readLine();
+
+			while (line != null) {
+				sb.append(line);
+				sb.append(System.lineSeparator());
+				line = br.readLine();
+			}
+			everything = sb.toString();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return everything;
 	}
 
 	@Test

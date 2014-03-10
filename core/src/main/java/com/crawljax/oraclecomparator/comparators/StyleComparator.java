@@ -25,7 +25,7 @@ public class StyleComparator extends AbstractComparator {
 	private static final Logger LOGGER = LoggerFactory.getLogger(StyleComparator.class.getName());
 
 	private static final String[] IGNORE_ATTRIBUTES = { "align", "bgcolor", "height", "valign",
-	        "width", "type", "dir" };
+	        "width", "type", "dir","id" };
 	private static final String[] IGNORE_TAGS = { "em", "strong", "dfn", "code", "samp", "kdb",
 	        "var", "cite", "tt", "b", "i", "u", "big", "small", "pre", "font" };
 	private static final String[] ALLOW_STYLE_TYPES = { "display", "visibility" };
