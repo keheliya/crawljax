@@ -155,6 +155,10 @@ class OutputBuilder {
 		return new File(screenshots, name + ".jpg");
 	}
 
+	File getScreenshots(){
+		return screenshots;
+	}
+
 	public File newThumbNail(String name) {
 		return new File(screenshots, name + "_small.jpg");
 	}
