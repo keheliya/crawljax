@@ -6,8 +6,10 @@ import com.crawljax.core.configuration.BrowserConfiguration;
 import com.crawljax.core.configuration.CrawljaxConfiguration;
 import com.crawljax.core.configuration.Form;
 import com.crawljax.core.configuration.InputSpecification;
+import com.crawljax.oraclecomparator.OracleComparator;
 import com.crawljax.plugins.crawloverview.CrawlOverview;
 import com.crawljax.plugins.crawloverview.model.OutPutModel;
+import com.crawljax.oraclecomparator.comparators.StyleComparator;
 import com.crawljax.rules.TempDirInTargetFolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +46,7 @@ public class StateExplorer {
         //builder.crawlRules().clickDefaultElements();
         //builder.crawlRules().click("div");
 
-        builder.setMaximumStates(20);
+        //builder.setUnlimitedCrawlDepth().setMaximumStates(20);
 		builder.setMaximumRunTime(300,TimeUnit.SECONDS);
        // builder.setMaximumDepth(2);
        // builder.crawlRules().clickElementsInRandomOrder(true);
@@ -67,28 +69,14 @@ public class StateExplorer {
 //        CrawlOverview plugin = new CrawlOverview();
 		CrawlOverviewMod plugin = new CrawlOverviewMod();
         builder.addPlugin(plugin);
-        CrawljaxRunner crawljax = new CrawljaxRunner(builder.build());
         builder.setOutputDirectory(target);
+
+        builder.crawlRules().addOracleComparator(new OracleComparator("style", new StyleComparator()));
+
+        CrawljaxRunner crawljax = new CrawljaxRunner(builder.build());
         crawljax.call();
 
         result = plugin.getResult();
-		int minWidth=0;
-		int minHeight=0;
-		File node = new File(output_loc+"/screenshots");
-		if(node.isDirectory()){
-			String[] subNode = node.list();
-			for(String filename : subNode){
-				if(!filename.contains("small"))
-				{
-					BufferedImage bimg = ImageIO.read(new File(output_loc+"/screenshots/"+filename));
-					minWidth          = (minWidth!=0 && minWidth<bimg.getWidth())?minWidth:bimg.getWidth();
-					minHeight         = (minHeight!=0 && minHeight<bimg.getHeight())?minHeight:bimg.getHeight();
-				}
-			}
-			System.out.println("min width:"+minWidth+" minheight:"+minHeight);
-		}
-
-
 
     }
 

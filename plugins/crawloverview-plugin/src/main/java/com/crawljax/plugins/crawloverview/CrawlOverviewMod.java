@@ -105,25 +105,6 @@ public class CrawlOverviewMod implements OnNewStatePlugin, PreStateCrawlingPlugi
 				compareImgs(oldState,stateName,node);
 			}
 
-
-
-			String[] subNode = node.list();
-			for(String filename : subNode){
-				if(!filename.contains("small") && !filename.contains("diff"))
-				{
-					BufferedImage bimg = null;
-					try {
-						bimg = ImageIO.read(new File(node, filename));
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					minWidth          = (minWidth!=0 && minWidth<bimg.getWidth())?minWidth:bimg.getWidth();
-					minHeight         = (minHeight!=0 && minHeight<bimg.getHeight())?minHeight:bimg.getHeight();
-
-
-				}
-			}
-			System.out.println(stateName+" min width:"+minWidth+" minheight:"+minHeight);
 		}
 
 	}
